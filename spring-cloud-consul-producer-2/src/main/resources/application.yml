@@ -1,0 +1,13 @@
+server:
+  port: 8602
+spring:
+  application:
+    name: spring-cloud-consul-producer-2
+  cloud:
+    consul:
+      discovery:
+        #注册到consul的服务名称
+        serviceName: tyrael-service-producer
+      host: localhost
+      port: 8500
+

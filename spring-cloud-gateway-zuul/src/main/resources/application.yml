@@ -1,0 +1,31 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: spring-cloud-gateway-zuul
+  cloud:
+    consul:
+      discovery:
+        #注册到consul的服务名称
+        prefer-ip-address: true
+        health-check-interval: 10s
+        hostname: ${spring.cloud.client.ip-address}
+        service-name: ${spring.application.name}
+        enabled: true
+        instance-id: ${spring.application.name}:${server.port}
+      host: localhost
+      port: 8500
+
+#这里的配置表示，访问/consumer/** 直接重定向到http://localhost:8603
+zuul:
+  routes:
+    consumer:
+      path: /consumer/**
+      url: http://localhost:8603/
+    producer:
+      path: /producer/**
+      serviceId: tyrael-service-producer
+        # 如果此配置不设置为false，则zuul处理路由时，会将path的前缀忽略。
+        # 多个服务时，去掉前缀，无法区分转发的请求。路径中会补充serviceId作为转发前缀。
+        # strip-prefix: false
+
